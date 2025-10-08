@@ -65,7 +65,7 @@ export default function Contact() {
 
   return (
     <div className="w-full min-h-screen bg-white overflow-hidden">
-       <header className="w-full px-6 md:px-12 lg:px-20 py-4 md:py-6 absolute top-0 left-0 z-50">
+       <header className="w-full px-6 md:px-12 lg:px-20 py-4 md:py-6 ">
       <div className="flex items-center justify-between max-w-[1600px] mx-auto relative z-60">
         {/* Logo */}
         <div className="flex items-center relative z-60">
