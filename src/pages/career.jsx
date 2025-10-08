@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Globe, Users, Briefcase, TrendingUp, Linkedin, Twitter, Instagram, Facebook, Mail, Phone, ArrowRight, Star, Code, MessageSquare, CheckCircle, Menu, X, Send } from 'lucide-react';
 import { Link } from "react-router-dom";
 
-export default function CareerPage() {
+export default function Career() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [formData, setFormData] = useState({
     fullName: '',

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Globe, Users, Briefcase, TrendingUp, Linkedin, Twitter, Instagram, Facebook, Mail, Phone, MapPin, Menu, X, Send, Clock } from 'lucide-react';
 import { Link } from "react-router-dom";
 
-export default function ContactPage() {
+export default function Contact() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [formData, setFormData] = useState({
     fullName: '',

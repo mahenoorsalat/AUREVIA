@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { MessageSquare, Users, TrendingUp, Code, Linkedin, Twitter, Instagram, Facebook, Menu, X, CheckCircle, ArrowRight, Briefcase, Target, Zap, Shield } from 'lucide-react';
 import { Link } from "react-router-dom";
 
-export default function ServicesPage() {
+export default function Service() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
