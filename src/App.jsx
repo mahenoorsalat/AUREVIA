@@ -1,12 +1,9 @@
 import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Service from "./pages/service";
-import Career from "./pages/career";
-import Contact from "./pages/contact";
-
-
-
+import Home from "./pages/Home.jsx";
+import About from "./pages/About.jsx";
+import Service from "./pages/Service.jsx";
+import Career from "./pages/Career.jsx";
+import Contact from "./pages/Contact.jsx";
 
 function App() {
   return (
