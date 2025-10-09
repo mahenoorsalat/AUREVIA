@@ -1,8 +1,13 @@
 import { useState } from 'react';
 import { Globe, Users, Briefcase, TrendingUp, Linkedin, Twitter, Instagram, Facebook, Mail, Phone, MapPin, Menu, X, Send, Clock } from 'lucide-react';
 import { Link } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
+
 
 export default function Contact() {
+  
   const [menuOpen, setMenuOpen] = useState(false);
   const [formData, setFormData] = useState({
     fullName: '',
@@ -14,6 +19,7 @@ export default function Contact() {
   });
   const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
+const backendURL = import.meta.env.VITE_BACKEND_URL ;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -23,45 +29,54 @@ export default function Contact() {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitStatus({ type: '', message: '' });
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+  setSubmitStatus({ type: '', message: '' });
 
-    try {
-      const response = await fetch('YOUR_API_ENDPOINT_HERE', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-API-Key': 'YOUR_API_KEY_HERE'
-        },
-        body: JSON.stringify(formData)
-      });
+  try {
+    const response = await fetch(`${backendURL}/api/contact`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-Key': 'YOUR_API_KEY_HERE'
+      },
+      body: JSON.stringify(formData)
+    });
 
-      if (!response.ok) throw new Error('Submission failed');
+    if (!response.ok) throw new Error('Submission failed');
 
-      setSubmitStatus({
-        type: 'success',
-        message: 'Message sent successfully! We\'ll get back to you within 24 hours.'
-      });
-      
-      setFormData({
-        fullName: '',
-        email: '',
-        phone: '',
-        company: '',
-        subject: '',
-        message: ''
-      });
-    } catch (error) {
-      setSubmitStatus({
-        type: 'error',
-        message: 'Failed to send message. Please try again.'
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    // Toast success notification
+    toast.success("✅ Message sent successfully! We'll get back to you within 24 hours.");
+
+    setSubmitStatus({
+      type: 'success',
+      message: 'Message sent successfully! We\'ll get back to you within 24 hours.'
+    });
+
+    // Reset form
+    setFormData({
+      fullName: '',
+      email: '',
+      phone: '',
+      company: '',
+      subject: '',
+      message: ''
+    });
+  } catch (error) {
+    console.error(error);
+
+    // Toast error notification
+    toast.error("❌ Failed to send message. Please try again.");
+
+    setSubmitStatus({
+      type: 'error',
+      message: 'Failed to send message. Please try again.'
+    });
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   return (
     <div className="w-full min-h-screen bg-white overflow-hidden">
@@ -457,6 +472,19 @@ export default function Contact() {
           </div>
         </div>
       </footer>
+
+      <ToastContainer
+  position="top-right"
+  autoClose={3000}
+  hideProgressBar={false}
+  newestOnTop={false}
+  closeOnClick
+  rtl={false}
+  pauseOnFocusLoss
+  draggable
+  pauseOnHover
+  theme="colored"
+/>
     </div>
   );
 }

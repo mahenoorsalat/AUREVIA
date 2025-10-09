@@ -1,25 +1,47 @@
-import { useState } from 'react';
-import { Globe, Users, Briefcase, TrendingUp, Linkedin, Twitter, Instagram, Facebook, Mail, Phone, ArrowRight, Star, Code, MessageSquare, CheckCircle, Menu, X, Send } from 'lucide-react';
+import { useState } from "react";
+import {
+  Globe,
+  Users,
+  Briefcase,
+  TrendingUp,
+  Linkedin,
+  Twitter,
+  Instagram,
+  Facebook,
+  Mail,
+  Phone,
+  ArrowRight,
+  Star,
+  Code,
+  MessageSquare,
+  CheckCircle,
+  Menu,
+  X,
+  Send
+} from "lucide-react";
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Career() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    country: '',
-    role: '',
-    experience: '',
-    portfolio: '',
-    coverLetter: ''
+    fullName: "",
+    email: "",
+    phone: "",
+    country: "",
+    role: "",
+    experience: "",
+    portfolio: "",
+    coverLetter: ""
   });
-  const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const backendURL = import.meta.env.VITE_BACKEND_URL ;
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value
     }));
@@ -28,45 +50,40 @@ export default function Career() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setSubmitStatus({ type: '', message: '' });
 
     try {
-      const response = await fetch('YOUR_API_ENDPOINT_HERE', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-API-Key': 'YOUR_API_KEY_HERE'
-        },
+      const response = await fetch(`${backendURL}/api/gmail`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)
       });
 
-      if (!response.ok) throw new Error('Submission failed');
+      const data = await response.json();
 
-      setSubmitStatus({
-        type: 'success',
-        message: 'Application submitted successfully! We\'ll get back to you soon.'
-      });
-      
-      setFormData({
-        fullName: '',
-        email: '',
-        phone: '',
-        country: '',
-        role: '',
-        experience: '',
-        portfolio: '',
-        coverLetter: ''
-      });
+      if (response.ok && data.success) {
+        toast.success("✅ Application submitted successfully! We'll get back to you soon.");
+
+        // Reset form
+        setFormData({
+          fullName: "",
+          email: "",
+          phone: "",
+          country: "",
+          role: "",
+          experience: "",
+          portfolio: "",
+          coverLetter: ""
+        });
+      } else {
+        toast.error("❌ Failed to send application. Please try again.");
+      }
     } catch (error) {
-      setSubmitStatus({
-        type: 'error',
-        message: 'Failed to submit application. Please try again.'
-      });
+      console.error(error);
+      toast.error("⚠️ Something went wrong. Please check your connection.");
     } finally {
       setIsSubmitting(false);
     }
   };
-
   return (
     <div className="w-full min-h-screen bg-white overflow-hidden">
         <header className="w-full px-6 md:px-12 lg:px-20 py-4 md:py-6 ">
@@ -309,11 +326,7 @@ export default function Career() {
           <h2 className="text-3xl md:text-4xl font-bold text-[#0D0029] mb-4 text-center">Apply Now</h2>
           <p className="text-center text-[#6F6F6F] mb-8">Join our mission-driven team and build your remote career with us</p>
 
-          {submitStatus.message && (
-            <div className={`mb-6 p-4 rounded-lg ${submitStatus.type === 'success' ? 'bg-green-50 text-green-800 border border-green-200' : 'bg-red-50 text-red-800 border border-red-200'}`}>
-              {submitStatus.message}
-            </div>
-          )}
+        
 
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -474,6 +487,20 @@ export default function Career() {
           </div>
         </div>
       </footer>
+
+      <ToastContainer
+  position="top-right"
+  autoClose={3000}
+  hideProgressBar={false}
+  newestOnTop={false}
+  closeOnClick
+  rtl={false}
+  pauseOnFocusLoss
+  draggable
+  pauseOnHover
+  theme="colored"
+/>
+
     </div>
   );
 }
